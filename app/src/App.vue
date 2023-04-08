@@ -5,7 +5,7 @@ import HelloWorld from './components/HelloWorld.vue'
 <template>
     <div>
     </div>
-    <HelloWorld msg="Hello World" />
+    <HelloWorld />
 </template>
 
 <style scoped></style>
