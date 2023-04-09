@@ -5,20 +5,27 @@ export default {
             header: "Shopping List App",
             newItem: "",
             items: [
+                /*
                 { id: 1, label: "Orange" },
                 { id: 2, label: "Mangoes" },
                 { id: 3, label: "Tomatoes" },
-                { id: 4, label: "Ice Cream" },
+                { id: 4, label: "Ice Cream" }, */
             ],
+            editing: false,
         }
     },
 
     methods: {
-        addItem(item) {
+        addItem() {
             this.items.push({
                 id: this.items.length + 1,
-                label: item
+                label: this.newItem
             })
+            this.newItem = ""
+        },
+
+        doEdit(editing) {
+            this.editing = editing
             this.newItem = ""
         }
     },
@@ -26,9 +33,19 @@ export default {
 </script>
 
 <template>
-    <h1>{{ header }}</h1>
-    <input type="text" v-model.lazy="newItem" placeholder="Enter an item" />
-    <button type="button" class="add-item" v-on:click="addItem(newItem)">Add item</button>
+    <div class="header">
+        <h1>{{ header }}</h1>
+        <button v-if="editing" @click="doEdit(false)" class="no-edit">Cancel</button>
+        <button v-else @click="doEdit(true)" class="edit">Add Item</button>
+    </div>
+
+    <div v-if="editing">
+        <input type="text" v-model="newItem" @keyup.enter="addItem" placeholder="Enter an item" />
+        <button type="button" class="add-item" @click="addItem">Add item</button>
+    </div>
+
+    <p v-if="items.length === 0">Nice job! You bought all the items</p>
+
     <ul class="shopping-list">
         <li v-for="item in items" :key="item.id">{{ item.label }}</li>
     </ul>
@@ -42,5 +59,15 @@ export default {
 
 .add-item {
     margin-left: 5px;
+}
+
+.no-edit {
+    background-color: red;
+    margin: 8px;
+}
+
+.edit {
+    background-color: green;
+    margin: 8px;
 }
 </style>
