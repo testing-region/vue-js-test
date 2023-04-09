@@ -10,23 +10,17 @@ export default {
                 { id: 3, label: "Tomatoes" },
                 { id: 4, label: "Ice Cream" },
             ],
-            count: 0
         }
     },
 
     methods: {
         addItem(item) {
             this.items.push({
-                id: this.count,
+                id: this.items.length + 1,
                 label: item
             })
-            this.count++
             this.newItem = ""
         }
-    },
-
-    mounted() {
-        this.count = this.items.length
     },
 }
 </script>
@@ -34,7 +28,7 @@ export default {
 <template>
     <h1>{{ header }}</h1>
     <input type="text" v-model.lazy="newItem" placeholder="Enter an item" />
-    <button type="button" class="add-item" @click="addItem(newItem)">Add item</button>
+    <button type="button" class="add-item" v-on:click="addItem(newItem)">Add item</button>
     <ul class="shopping-list">
         <li v-for="item in items" :key="item.id">{{ item.label }}</li>
     </ul>
