@@ -5,11 +5,10 @@ export default {
             header: "Shopping List App",
             newItem: "",
             items: [
-                /*
-                { id: 1, label: "Orange" },
-                { id: 2, label: "Mangoes" },
-                { id: 3, label: "Tomatoes" },
-                { id: 4, label: "Ice Cream" }, */
+                { id: 1, label: "Orange", purchased: true },
+                { id: 2, label: "Mangoes", purchased: true },
+                { id: 3, label: "Tomatoes", purchased: false },
+                { id: 4, label: "Ice Cream", purchased: false },
             ],
             editing: false,
         }
@@ -27,6 +26,10 @@ export default {
         doEdit(editing) {
             this.editing = editing
             this.newItem = ""
+        },
+
+        togglePurchased(item) {
+            item.purchased = !item.purchased
         }
     },
 }
@@ -35,19 +38,27 @@ export default {
 <template>
     <div class="header">
         <h1>{{ header }}</h1>
-        <button v-if="editing" @click="doEdit(false)" class="no-edit">Cancel</button>
-        <button v-else @click="doEdit(true)" class="edit">Add Item</button>
+        <button v-if="editing" @click="doEdit(false)" class="no-edit">
+            Cancel
+        </button>
+        <button v-else @click="doEdit(true)" class="edit">
+            Add Item
+        </button>
     </div>
 
     <div v-if="editing">
-        <input type="text" v-model="newItem" @keyup.enter="addItem" placeholder="Enter an item" />
-        <button type="button" class="add-item" @click="addItem">Add item</button>
+        <input type="text" v-model="newItem" placeholder="Enter an item" />
+        <button :disabled="newItem.length === 0" type="button" class="add-item" @click="addItem">
+            Add item
+        </button>
     </div>
 
     <p v-if="items.length === 0">Nice job! You bought all the items</p>
 
     <ul class="shopping-list">
-        <li v-for="item in items" :key="item.id">{{ item.label }}</li>
+        <li v-for="item in items" @click="togglePurchased(item)" :class="{ strikeout: item.purchased }" :key="item.id">
+            {{ item.label }}
+        </li>
     </ul>
 </template>
 
@@ -69,5 +80,9 @@ export default {
 .edit {
     background-color: green;
     margin: 8px;
+}
+
+.strikeout {
+    text-decoration-line: line-through;
 }
 </style>
