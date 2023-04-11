@@ -32,6 +32,12 @@ export default {
             item.purchased = !item.purchased
         }
     },
+
+    computed: {
+        reverseItems() {
+            return [...this.items].reverse()
+        }
+    },
 }
 </script>
 
@@ -56,7 +62,8 @@ export default {
     <p v-if="items.length === 0">Nice job! You bought all the items</p>
 
     <ul class="shopping-list">
-        <li v-for="item in items" @click="togglePurchased(item)" :class="{ strikeout: item.purchased }" :key="item.id">
+        <li v-for="item in reverseItems" class="li-item" @click="togglePurchased(item)"
+            :class="{ strikeout: item.purchased }" :key="item.id">
             {{ item.label }}
         </li>
     </ul>
@@ -84,5 +91,9 @@ export default {
 
 .strikeout {
     text-decoration-line: line-through;
+}
+
+.li-item {
+    cursor: pointer;
 }
 </style>
